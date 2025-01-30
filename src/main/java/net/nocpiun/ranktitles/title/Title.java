@@ -47,11 +47,4 @@ public class Title {
     public boolean hasPlayer(String uuid) {
         return playerUUIDList.contains(uuid);
     }
-
-    public static Gson getAdaptedGson() {
-        return new GsonBuilder()
-                .registerTypeAdapter(Title.class, new TitleSerializer())
-                .registerTypeAdapter(Title.class, new TitleDeserializer())
-                .create();
-    }
 }

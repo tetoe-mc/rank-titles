@@ -35,14 +35,14 @@ public class RankTitlesPlugin {
 
     private ConfigType getConfig() {
         return ConfigManager.get()
-                .getOrCreateConfig("rank-titles", defaultConfig, ConfigType.class, Title.getAdaptedGson())
+                .getOrCreateConfig("rank-titles", defaultConfig, ConfigType.class)
                 .getObject();
     }
 
     private void saveConfig(ConfigType config) {
         ConfigManager.get()
-                .getOrCreateConfig("rank-titles", defaultConfig, ConfigType.class, Title.getAdaptedGson())
-                .save(config, Title.getAdaptedGson());
+                .getOrCreateConfig("rank-titles", defaultConfig, ConfigType.class)
+                .save(config);
     }
 
     public MinecraftServer getServer() {
