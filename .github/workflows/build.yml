@@ -6,6 +6,10 @@
 name: build
 on: [pull_request, push]
 
+env:
+  - USERNAME: ${{ secrets.USERNAME }}
+  - ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
 jobs:
   build:
     strategy:
