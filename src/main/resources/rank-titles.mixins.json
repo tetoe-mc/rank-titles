@@ -1,0 +1,12 @@
+{
+	"required": true,
+	"package": "net.nocpiun.ranktitles.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"server": [
+		"PlayerEntityMixin",
+		"ServerPlayerEntityMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
