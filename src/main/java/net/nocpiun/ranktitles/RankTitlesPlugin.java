@@ -8,15 +8,20 @@ import net.nocpiun.ranktitles.command.RankCommand;
 import net.nocpiun.ranktitles.command.TitlesCommand;
 import net.nocpiun.ranktitles.title.Title;
 import space.nocp.configx.api.ConfigManager;
+import space.nocp.configx.api.Configuration;
 
 import java.util.ArrayList;
 
 public class RankTitlesPlugin {
+    private static final String CONFIG_ID = "rank-titles";
     private static final ConfigType defaultConfig = new ConfigType(new ArrayList<>());
 
+    private Configuration<ConfigType> config;
     private MinecraftServer server;
 
     public RankTitlesPlugin() {
+        config = ConfigManager.get().register(CONFIG_ID, defaultConfig, ConfigType.class);
+
         ServerLifecycleEvents.SERVER_STARTED.register(this::onServerStart);
         ServerLifecycleEvents.SERVER_STOPPING.register(this::onServerStop);
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
@@ -33,24 +38,12 @@ public class RankTitlesPlugin {
         this.server = null;
     }
 
-    private ConfigType getConfig() {
-        return ConfigManager.get()
-                .getOrCreateConfig("rank-titles", defaultConfig, ConfigType.class)
-                .getObject();
-    }
-
-    private void saveConfig(ConfigType config) {
-        ConfigManager.get()
-                .getOrCreateConfig("rank-titles", defaultConfig, ConfigType.class)
-                .save(config);
-    }
-
     public MinecraftServer getServer() {
         return server;
     }
 
     public ArrayList<Title> getTitles() {
-        return getConfig().titles;
+        return config.get().titles;
     }
 
     public Title getTitle(String id) {
@@ -63,19 +56,21 @@ public class RankTitlesPlugin {
     }
 
     public Title createTitle(String id, String name) {
-        final ConfigType config = getConfig();
+        final ConfigType configObj = config.get();
         final Title title = new Title(id, name);
 
-        config.titles.add(title);
-        saveConfig(config);
+        configObj.titles.add(title);
+        config.set(configObj);
+        config.save();
 
         return title;
     }
 
     public void removeTitle(String id) {
-        final ConfigType config = getConfig();
-        config.titles.removeIf(title -> title.getId().equals(id));
-        saveConfig(config);
+        final ConfigType configObj = config.get();
+        configObj.titles.removeIf(title -> title.getId().equals(id));
+        config.set(configObj);
+        config.save();
     }
 
     public boolean isTitleExisted(String id) {
@@ -89,26 +84,28 @@ public class RankTitlesPlugin {
     }
 
     public void giveTitleToPlayer(ServerPlayerEntity player, String titleId) {
-        final ConfigType config = getConfig();
+        final ConfigType configObj = config.get();
 
-        for(Title title : config.titles) {
+        for(Title title : configObj.titles) {
             if(title.getId().equals(titleId)) {
                 title.addPlayer(player);
             }
         }
 
-        saveConfig(config);
+        config.set(configObj);
+        config.save();
     }
 
     public void depriveTitleFromPlayer(ServerPlayerEntity player, String titleId) {
-        final ConfigType config = getConfig();
+        final ConfigType configObj = config.get();
 
-        for(Title title : config.titles) {
+        for(Title title : configObj.titles) {
             if(title.getId().equals(titleId)) {
                 title.removePlayer(player);
             }
         }
 
-        saveConfig(config);
+        config.set(configObj);
+        config.save();
     }
 }
