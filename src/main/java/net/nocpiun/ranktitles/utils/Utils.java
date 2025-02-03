@@ -1,9 +1,9 @@
 package net.nocpiun.ranktitles.utils;
 
-import net.minecraft.entity.player.PlayerEntity;
 import net.nocpiun.ranktitles.RankTitles;
 import net.nocpiun.ranktitles.RankTitlesPlugin;
 import net.nocpiun.ranktitles.title.Title;
+import org.jetbrains.annotations.NotNull;
 
 public class Utils {
     public static String getPlayerTitlesPrefix(String uuid) {
@@ -20,5 +20,15 @@ public class Utils {
         if(amount != 0) titleString.append(" ");
 
         return titleString.toString();
+    }
+
+    public static <O> boolean checkProperty(@NotNull O obj, String propertyName) {
+        try {
+            Class<?> type = obj.getClass();
+            type.getDeclaredField(propertyName);
+            return true;
+        } catch (NoSuchFieldException e) {
+            return false;
+        }
     }
 }

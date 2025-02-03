@@ -7,6 +7,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.nocpiun.ranktitles.command.RankCommand;
 import net.nocpiun.ranktitles.command.TitlesCommand;
 import net.nocpiun.ranktitles.title.Title;
+import net.nocpiun.ranktitles.utils.Utils;
 import space.nocp.configx.api.ConfigManager;
 import space.nocp.configx.api.Configuration;
 
@@ -43,6 +44,13 @@ public class RankTitlesPlugin {
     }
 
     public ArrayList<Title> getTitles() {
+        ConfigType configObj = config.get();
+        if(configObj == null || !Utils.checkProperty(configObj, "titles")) {
+            config.set(new ConfigType(new ArrayList<>()));
+            config.save();
+        }
+
+        // Get the config again to ensure not getting null
         return config.get().titles;
     }
 
