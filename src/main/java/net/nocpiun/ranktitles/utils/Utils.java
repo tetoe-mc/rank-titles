@@ -1,9 +1,15 @@
 package net.nocpiun.ranktitles.utils;
 
+import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.PlayerManager;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.nocpiun.ranktitles.RankTitles;
 import net.nocpiun.ranktitles.RankTitlesPlugin;
 import net.nocpiun.ranktitles.title.Title;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.*;
 
 public class Utils {
     public static String getPlayerTitlesPrefix(String uuid) {
@@ -30,5 +36,10 @@ public class Utils {
         } catch (NoSuchFieldException e) {
             return false;
         }
+    }
+
+    public static void refreshPlayerList(MinecraftServer server) {
+        PlayerManager playerManager = server.getPlayerManager();
+        playerManager.sendToAll(new PlayerListS2CPacket(EnumSet.of(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME), playerManager.getPlayerList()));
     }
 }

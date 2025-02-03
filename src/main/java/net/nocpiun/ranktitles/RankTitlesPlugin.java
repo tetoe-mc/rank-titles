@@ -77,8 +77,10 @@ public class RankTitlesPlugin {
     public void removeTitle(String id) {
         final ConfigType configObj = config.get();
         configObj.titles.removeIf(title -> title.getId().equals(id));
+
         config.set(configObj);
         config.save();
+        Utils.refreshPlayerList(server);
     }
 
     public boolean isTitleExisted(String id) {
@@ -102,6 +104,7 @@ public class RankTitlesPlugin {
 
         config.set(configObj);
         config.save();
+        Utils.refreshPlayerList(server);
     }
 
     public void depriveTitleFromPlayer(ServerPlayerEntity player, String titleId) {
@@ -115,5 +118,6 @@ public class RankTitlesPlugin {
 
         config.set(configObj);
         config.save();
+        Utils.refreshPlayerList(server);
     }
 }
