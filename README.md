@@ -42,15 +42,7 @@ git clone https://github.com/tetoe-mc/rank-titles.git
 cd rank-titles
 ```
 
-2. Create `secrets.gradle` file in the project folder as the following:
-
-```gradle
-// Remember to edit the contents inside the quotes
-project.ext.username = "<Your Github Username>"
-project.ext.access_token = "<Your Github Token>"
-```
-
-3. Run the build task
+2. Run the build task
 
 ```cmd
 ./gradlew build
